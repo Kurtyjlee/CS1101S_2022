@@ -16,9 +16,10 @@ function is_biggie_size(combo){
 // Checks the price of the combo
 // Can use a const to make it clearer as well.
 function combo_price(combo){
+    const COST = 1.17;
     return is_biggie_size(combo) 
-            ? unbiggie_size(combo) * 1.17 + 0.50
-            : combo * 1.17;
+            ? unbiggie_size(combo) * COST + 0.50
+            : combo * COST;
 }
 
 // Returns an empty order
