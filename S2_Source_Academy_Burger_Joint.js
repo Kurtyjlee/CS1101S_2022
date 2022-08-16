@@ -39,6 +39,6 @@ function last_combo(order){
 
 // Takes the last combo out and shows the other combos
 function other_combos(order){
-    return math_floor((order - last_combo(order)) / 10);
+    return (order - last_combo(order)) / 10;
 }
 
