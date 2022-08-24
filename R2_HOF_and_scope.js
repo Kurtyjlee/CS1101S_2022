@@ -13,17 +13,18 @@ function term(n) {
 }
 
 function next(n) {
-    return n + 1
+    return n + 1;
 }
-\
 
 //qn 5
 function sum(n) {
-    return sum_iter();
+    return sum_iter(1, n, 0, term);
 }
 
-function sum_iter(start, end, result) {
-    return start > end
-        ? 0
-        : return sum_iter(start + 1, end, result + result + 1);
+function sum_iter(start, end, result, term) {
+    return start >= end
+        ? result
+        : sum_iter(start + 1, end, result + term(start), term);
 }
+
+sum(3);
