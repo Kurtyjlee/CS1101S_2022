@@ -11,18 +11,4 @@ function pascal(row, position) {
         + pascal(row - 1, position);
 }
 
-// Iterative process
-function pascal_2(row, position) {
-    return pascal_iter(row, position, 0, 1, 0);
-}
-
-function pascal_iter(row, position, counter, result, prev_result) {
-    // Case 1: Point out of pascal triangle
-    return counter >= row
-        ? result
-        : position > counter || position === 0
-        ? pascal_iter(row, position, counter + 1, result + 0, result)
-        : pascal_iter(row, position, counter + 1, result + prev_result, result);
-}
-
-display(pascal_2(3, 3));
+display(pascal(4, 2));
