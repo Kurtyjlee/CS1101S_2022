@@ -1,7 +1,7 @@
 // Recursively find a point in a pascal triangle
 function pascal(row, position) {
     // Case 1: Point out of pascal triangle
-    return row === 0 && position > row || row === 0 && position < 0
+    return position > row || position < 0
         ? 0
         // Case 2: Top row
         : row === 0
@@ -11,4 +11,4 @@ function pascal(row, position) {
         + pascal(row - 1, position);
 }
 
-display(pascal(4, 2));
+display(pascal(3, 0));
