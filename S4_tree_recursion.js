@@ -13,6 +13,7 @@ function pascal(row, position) {
 
 // Alternative
 function pascal_2(row, position) {
+    // Condition for when to start counting
     return position === 0 || position === row
         ? 1
         : pascal(row - 1, position - 1) 
