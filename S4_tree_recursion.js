@@ -11,4 +11,12 @@ function pascal(row, position) {
         + pascal(row - 1, position);
 }
 
-display(pascal(4, 2));
+// Alternative
+function pascal_2(row, position) {
+    return position === 0 || position === row
+        ? 1
+        : pascal(row - 1, position - 1) 
+        + pascal(row - 1, position);
+}
+
+display(pascal_2(4, 2));
