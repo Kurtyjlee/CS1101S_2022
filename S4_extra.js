@@ -44,6 +44,13 @@ thrice(thrice)(adder)(0);
 ===> (thrice(x => a(a(a(x => a(a(a(x => a(a(a(x)))))))))))(0)
 ===> 27
 
+extra: 
+thrice(thrice(adder))(0)
+thrice(adder(adder(adder(x))))(0)
+adder(adder(adder(adder(adder(adder(adder(adder(adder(x)))))))))(0)
+===> 9
+
+
 4a.
 ((thrice(thrice))(add1))(6);
 ((thrice(f(f(f))))(add1))(6);
