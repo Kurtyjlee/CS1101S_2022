@@ -9,7 +9,16 @@ function every_second(target_list) {
             : pair(head(tail(target_list)), every_second(tail(tail(target_list))));
 }
 
-// draw_data(every_second(list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+// Question 1 alternative
+function every_second_alt(target_list) {
+    // Using length to check if it is the last value
+    return length(target_list) <= 1
+        // End the list
+        ? null
+        : pair(list_ref(target_list, 1), every_second_alt(tail(tail(target_list))));
+}
+
+draw_data(every_second(list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
 
 // Question 2
 function every_first(target_list){
@@ -37,4 +46,4 @@ function sum(another_list){
     return list(sum_iter(even_list, 0), sum_iter(odd_list, 0));
 }
 
-draw_data(sum(list(1, 2, 3, 4, 5, 6)));
+// draw_data(sum(list(1, 2, 3, 4, 5, 6)));
