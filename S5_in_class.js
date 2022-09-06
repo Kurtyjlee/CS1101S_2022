@@ -1,12 +1,9 @@
 // Question 1
 function every_second(target_list) {
     // When the even value is the last value
-    return is_null(tail(target_list))
+    return is_null(target_list) || is_null(tail(target_list))
         ? null
-        // Last odd value of the list
-        : is_null(tail(tail(target_list)))
-            ? pair(head(tail(target_list)), null)
-            : pair(head(tail(target_list)), every_second(tail(tail(target_list))));
+        : pair(head(tail(target_list)), every_second(tail(tail(target_list))));
 }
 
 // Question 1 alternative
@@ -18,18 +15,19 @@ function every_second_alt(target_list) {
         : pair(list_ref(target_list, 1), every_second_alt(tail(tail(target_list))));
 }
 
-draw_data(every_second(list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+// draw_data(every_second(list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
 
 // Question 2
 function every_first(target_list){
     // When the odd value is the last value
-    return is_null(tail(target_list))
+    return length(target_list) <= 1
         ? null
         // Last even value of the list
-        : is_null(tail(tail(target_list)))
-            ? pair(head(target_list), null)
-            : pair(head(target_list), every_second(tail(target_list)));
+        : pair(list_ref(target_list, 0), every_second(tail(target_list)));
 }
+
+// // Test if every_first is correct
+draw_data(every_first(list(1, 2, 3, 4, 5, 6, 7, 8)));
 
 // Get a list of the sum of even position values and sum of odd position values
 function sum(another_list){
@@ -46,4 +44,5 @@ function sum(another_list){
     return list(sum_iter(even_list, 0), sum_iter(odd_list, 0));
 }
 
-// draw_data(sum(list(1, 2, 3, 4, 5, 6)));
+// Testing sum
+// draw_data(sum(list(1, 2, 3, 4, 5)));
