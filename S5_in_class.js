@@ -23,11 +23,11 @@ function every_first(target_list){
     return length(target_list) <= 1
         ? null
         // Last even value of the list
-        : pair(list_ref(target_list, 0), every_second(tail(target_list)));
+        : pair(list_ref(target_list, 0), every_first(tail(tail(target_list))));
 }
 
 // // Test if every_first is correct
-draw_data(every_first(list(1, 2, 3, 4, 5, 6, 7, 8)));
+// draw_data(every_first(list(1, 2, 3, 4, 5, 6, 7, 8)));
 
 // Get a list of the sum of even position values and sum of odd position values
 function sum(another_list){
@@ -44,5 +44,8 @@ function sum(another_list){
     return list(sum_iter(even_list, 0), sum_iter(odd_list, 0));
 }
 
+// Question 2 answer
+
+
 // Testing sum
-// draw_data(sum(list(1, 2, 3, 4, 5)));
+draw_data(sum(list(1, 2, 3, 4, 5)));
