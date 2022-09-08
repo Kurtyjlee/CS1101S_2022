@@ -41,14 +41,20 @@ a trees can either have trees or a data type as its element.
 
 // Question 3 correct answer
 function accumulate_tree(f, op, initial, tree) {
-    return accumulate((x, y) => is_list(x)
+    // Takes in head(xs) and accumulate(...) as x and y, 
+    // checks if x is a list
+    return accumulate((x, y) => 
+                        is_list(x)
+                        // If x is a list, do the operation and go into tree
                         ? op(accumulate_tree(f, op, initial, x), y)
+                        // Not a list, convert the element into intended value
                         : op(f(x), y),
                     initial, 
                     tree);
+}
 
 const tree_1 = list(1, list(2, list(3, 4), 5), list(6, 7));
-accumulate_tree(x => 1, (x, y) => x + y, 0 , tree_1);
+accumulate_tree(x => x, (x, y) => x + y, 0, tree_1);
 
 /* Notes:
 - count_data_items, tree_sum is basically a special way to do
