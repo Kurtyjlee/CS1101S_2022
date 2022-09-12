@@ -17,15 +17,19 @@ function my_map(f, xs) {
 // my_map(x => x + 1, list(1, 2, 3));
 
 // Question 2
-const sample = list(1, 2, 3, 4);
 const duplicates = list(1, 2, 3, 4, 4, 3, 2, 1, 2);
 
 function remove_duplicates(lst) {
-    function remove_iter(lst, saved) {
-        return filter(
-                x => !is_null(member(x, saved))
-                    ? , lst);
-    }
+    return is_null(lst)
+        ? null
+        : pair(
+            // Inputting the head
+            head(lst),
+            // Getting and inputting a list without item that just got inputted
+            remove_duplicates(filter(x => !equal(x, head(lst)), tail(lst))));
 }
 
-remove_duplicates(duplicates);
+// remove_duplicates(duplicates);
+
+// Question 3
+
