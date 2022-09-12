@@ -1,15 +1,8 @@
-// function my_map(f, xs) {
-//     // this should be a one-liner
-//     return is_null(xs)
-//         ? null
-//         : pair(f(head(xs)), my_map(f, tail(xs)));
+// function accumulate(f, initial, xs) {
+//     return is_null(xs) 
+//         ? initial
+//         : f(head(xs), accumulate(f, initial, tail(xs)));
 // }
-
-function accumulate(f, initial, xs) {
-    return is_null(xs) 
-        ? initial
-        : f(head(xs), accumulate(f, initial, tail(xs)));
-}
 
 function my_map(f, xs) {
     // this should be a one-liner
