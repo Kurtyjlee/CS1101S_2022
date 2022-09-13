@@ -1,24 +1,47 @@
-function makeup_amount(x, coins) {
-    if (x === 0) {
+// Question 1
+function remove_duplicate(lst) {
+    return is_null(lst)
+        ? null
+        : accumulate((x, y) => pair(x, remove_all(x, y)), null, lst);
+}
+
+// Alternative solution, question 1
+function remove_dupes(lst) {
+    return accumulate((x, ys) => is_null(member(x, ys))
+                                ? pair(x, ys)
+                                : ys,
+                        null,
+                        lst);
+}
+
+remove_duplicate(list(1, 1, 2, 2, 3, 4));
+
+// Question 2
+function subsets(lst) {
+    if (is_null(lst)) {
         return list(null);
-    } else if (x < 0 || is_null(coins)) {
-        return null;
     } else {
-        // Combinations that do not use the head coin.
-        const combi_A = ...
-
-        // Combinations that do not use the head coin 
-        // for the remaining amount.
-        const combi_B = ...
-
-        // Combinations that use the head coin.
-        const combi_C = ...
-
-        return append(combi_A, combi_C);
+        const dont_take = subsets(tail(lst));
+        const take = map(x => pair(head(lst), x), dont_take);
+        
+        return append(dont_take, take);
     }
 }
 
-makeup_amount(22, list(1, 10, 5, 20, 1, 5, 1, 50));
-// Result: list(list(20, 1, 1), list(10, 5, 1, 5, 1), list(1, 20, 1),
-//              list(1, 20, 1), list(1, 10, 5, 5, 1), 
-//              list(1, 10, 5, 1, 5))
+subsets(list(1, 2, 3));
+
+// Question 3, attempt but not correct
+function permutations(lst) {
+    if (is_null(lst)) {
+        return list(null);
+    } else {
+        const h_element = permutations(tail(lst));
+        const n_element = map(x => pair(head(lst), x), 
+                            map(x => pair(head(lst), x), 
+                                accumulate((x, y) => pair(head(lst), y), null, h_element)));
+        
+        return append(h_element, n_element);
+    }
+}
+
+permutations(list(1, 2, 3));
