@@ -41,7 +41,7 @@ function makeup_amount(x, coins) {
         // Combinations that do not use the head coin.
         const combi_A = pair(makeup_amount(x, tail(coins)), null);
         
-        // Combinations that do not use the head coin 
+        // Combinations that do not use the head coin z
         // for the remaining amount.
         const combi_B = null;
 
