@@ -31,7 +31,22 @@ const xs = list(6, 3, 8, 5, 1, 9, 6, 4, 2, 7);
 // Result: list(7, 2, 4, 6, 9, 1, 5, 8, 3, 6)
 
 // (d)
+function compare(x, y) {
+    const is_even = x => x % 2 === 0;
+    
+    if (is_even(x) && is_even(y)) {
+        return x <= y;
+    } else if (is_even(x) && !is_even(y)) {
+        return true;
+    } else if (!is_even(x) && is_even(y)) {
+        return false;
+    } else {
+        return x >= y;
+    }
+}
 // insertion_sort_cmp(xs, (x, y) => x % 2 === 0 && x <= y);
+// Correct answer
+// insertion_sort_cmp(xs, compare);
 // Result: list(2, 4, 6, 6, 8, 9, 7, 5, 3, 1)
 
 // Order of growth
