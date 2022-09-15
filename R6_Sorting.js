@@ -19,11 +19,11 @@ function insertion_sort_cmp(xs, cmp) {
 const xs = list(6, 3, 8, 5, 1, 9, 6, 4, 2, 7);
 
 // (a)
-// insertion_sort_cmp(xs, (x, y) => x < y); 
+// insertion_sort_cmp(xs, (x, y) => x <= y); 
 // Result: list(1, 2, 3, 4, 5, 6, 6, 7, 8, 9)
 
 // (b)
-// insertion_sort_cmp(xs, (x, y) => x > y);
+// insertion_sort_cmp(xs, (x, y) => x => y);
 // Result: list(9, 8, 7, 6, 6, 5, 4, 3, 2, 1)
 
 // (c)
@@ -86,7 +86,7 @@ function merge_sort(xs) {
 }
 
 // Test
-merge_sort(list(7, 6, 3, 8, 4, 6, 5, 9, 8, 3, 1, 5, 2));
+// merge_sort(list(7, 6, 3, 8, 4, 6, 5, 9, 8, 3, 1, 5, 2));
 
 // (a)
 // O(n), Θ(n), Ω(n)
