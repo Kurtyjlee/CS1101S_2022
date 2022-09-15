@@ -53,7 +53,7 @@ function drop(xs, n) {
     // to be completed
     return n === 0
         ? xs
-        : take(tail(xs), n - 1);
+        : drop(tail(xs), n - 1);
 }
 
 // merge two sorted lists into one sorted list
@@ -87,3 +87,10 @@ function merge_sort(xs) {
 
 // Test
 merge_sort(list(7, 6, 3, 8, 4, 6, 5, 9, 8, 3, 1, 5, 2));
+
+// (a)
+// O(n), Θ(n), Ω(n)
+
+// (b)
+// O(nlogn), Θ(nlogn), Ω(nlogn)
+
