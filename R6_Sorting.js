@@ -34,12 +34,15 @@ const xs = list(6, 3, 8, 5, 1, 9, 6, 4, 2, 7);
 function compare(x, y) {
     const is_even = x => x % 2 === 0;
     
+    // Both even, will put the smaller number infront
     if (is_even(x) && is_even(y)) {
         return x <= y;
+    // Will put the even number infront
     } else if (is_even(x) && !is_even(y)) {
         return true;
     } else if (!is_even(x) && is_even(y)) {
         return false;
+    // If both odd, will put the larger number infront
     } else {
         return x >= y;
     }
