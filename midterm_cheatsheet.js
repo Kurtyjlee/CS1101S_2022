@@ -63,25 +63,16 @@ list(null), pair(3, null) => list(3), append(list(3), list(2)) => list(3, 2)
 list(null), pair(2, null) => list(2), append(list(2), list(3)) => list(2, 3)
 
 // Inserts x into every position in ys
-function insertions(x, ys) {
-    function take(xs, n) {
-        return (n === 0) ? null : pair(head(xs), take(tail(xs), n - 1));
-    }
-    function drop(xs, n) {
-        return (n === 0) ? xs : drop(tail(xs), n - 1);
-    }
-    function helper(counter) {
-        if (counter > length(ys)) {
-            return null;
-        } else {
-            const lower = take(ys, counter);
-            const upper = drop(ys, counter);
-            return pair(
-                    append(lower, pair(x, upper)),
-                    helper(counter + 1));
-        }
-    }
-    return helper(0);
+function insertions(x, lst) {
+    return is_null(lst)
+           ? list(list(x))
+           : append(
+                list(
+                    pair(x, lst)), 
+                    // This map will return a list of list
+                    map(
+                        x => pair(head(lst), x), 
+                        insertions(x, tail(lst))));
 }
 
 function permutations(xs) {
