@@ -1,3 +1,4 @@
+// Important functions
 // Executes function on every element and returns a list
 function map(f, xs) {
     return is_null(xs)
@@ -67,13 +68,15 @@ function insertions(x, lst) {
     return is_null(lst)
            ? list(list(x))
            : append(
-                list(
-                    pair(x, lst)), 
-                    // This map will return a list of list
-                    map(
-                        x => pair(head(lst), x), 
-                        insertions(x, tail(lst))));
+                // Appending the list of lists
+                list(pair(x, lst)), 
+                // This map will return a list of list
+                map(
+                    x => pair(head(lst), x), 
+                    insertions(x, tail(lst))));
 }
+
+insertions(4, list(1, 2, 3));
 
 function permutations(xs) {
     return is_null(xs)
@@ -86,3 +89,34 @@ function permutations(xs) {
             permutations(tail(xs)));
 }
 permutations(list(1, 2, 3));
+
+function find_all_8(t) {
+    return is_number(t)
+        // List null will help build the list and null will not
+        ? (t === 8 ? list(null) : null)
+        // Executes both at the same time
+        : append(
+                // List null is necessary for map and pair
+                map(x => pair(head, x), find_all_8(head(t))),
+                map(x => pair(tail, x), find_all_8(tail(t))));
+}
+
+// common recurrence relations
+T(n) = T(n - 1) + O(1) => O(n)
+T(n) = T(n / 2) + O(1) => O(logn)
+T(n) = T(n - 1) + O(logn) => O(nlogn)
+T(n) = T(n - 1) + O(n) => O(n^2)
+// Generally, 
+T(n) = T(n - 1) + O(n^k) => O(n^(k+1))
+
+// Not intuitive recurrence relations
+T(n) = T(n / 2) + O(n) => O(n)
+T(n) = 2T(n / 2) + O(1) => O(n)
+T(n) = 2T(n - 1) + O(1) => O(2^n)
+
+// Order of growth
+const x = accumulate((x, ys) => x + ys, 0, enum_list(1, N));
+x + fun(n / 2) + fun(n / 2); // O(nlogn) + O(n) = O(nlogn)
+
+// misc functions
+build_list(n, f);
