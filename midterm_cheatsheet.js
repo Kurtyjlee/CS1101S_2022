@@ -101,6 +101,27 @@ function find_all_8(t) {
                 map(x => pair(tail, x), find_all_8(tail(t))));
 }
 
+function solvable(xs, n) {
+    const len = length(xs);
+    function helper(next, steps) {
+        return next < 0 || next > len - 1 || steps < 0
+            ? false
+            : next === len - 1
+            ? true
+            : helper(next + list_ref(xs, next), steps - 1) || 
+                helper(next - list_ref(xs, next), steps - 1);
+    }
+    return helper(0, n);
+}
+
+(f => f(f))(f => f(f)); // essence of recursion
+((f => f(f))
+ (make_factorial => 
+    n => (n === 0)
+        ? 1
+        : n * (make_factorial(make_factorial)))
+)(5); // returns 5!
+
 // common recurrence relations
 T(n) = T(n - 1) + O(1) => O(n)
 T(n) = T(n / 2) + O(1) => O(logn)
