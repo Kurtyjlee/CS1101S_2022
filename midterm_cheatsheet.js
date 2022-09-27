@@ -139,7 +139,4 @@ T(n) = 2T(n - 1) + O(1) => O(2^n)
 
 // Order of growth
 const x = accumulate((x, ys) => x + ys, 0, enum_list(1, N));
-x + fun(n / 2) + fun(n / 2); // O(nlogn) + O(n) = O(nlogn)
-
-// misc functions
-build_list(n, f);
+x + fun(n / 2) + fun(n / 2); // O(n) * O(logn) = O(nlogn)
