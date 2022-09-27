@@ -101,6 +101,7 @@ function find_all_8(t) {
                 map(x => pair(tail, x), find_all_8(tail(t))));
 }
 
+// Rucer puzzle
 function solvable(xs, n) {
     const len = length(xs);
     function helper(next, steps) {
@@ -114,7 +115,8 @@ function solvable(xs, n) {
     return helper(0, n);
 }
 
-(f => f(f))(f => f(f)); // essence of recursion
+// essence of recursion
+(f => f(f))(f => f(f)); 
 ((f => f(f))
  (make_factorial => 
     n => (n === 0)
