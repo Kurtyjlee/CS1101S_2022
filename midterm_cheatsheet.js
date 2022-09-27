@@ -1,4 +1,4 @@
-// Important functions
+// Map, Filter and accumulate
 // Executes function on every element and returns a list
 function map(f, xs) {
     return is_null(xs)
@@ -13,6 +13,17 @@ function filter(pred, xs) {
         : pred(head(xs))
             ? pair(head(xs), filter(pred, tail(xs)))
             : filter(pred, tail(xs));
+}
+
+function filter_tree(f, tree) {
+    return is_null(tree)
+          ? null
+          : is_list(head(tree))
+              ? pair(filter_tree(f, head(tree)), filter_tree(f, tail(tree)))
+              // Main filter portion
+              : f(head(tree))
+                  ? pair(head(tree), filter_tree(f, tail(tree)))
+                  : filter_tree(f, tail(tree));
 }
 
 // Executes the function starting from the back of the list
@@ -49,6 +60,7 @@ function accumulate_bst(f, initial, bst){
     }
 }
 
+// Higher level functions
 function permutations(xs) {
     return is_null(xs)
         ? list(null)
@@ -114,6 +126,68 @@ function solvable(xs, n) {
     }
     return helper(0, n);
 }
+
+// All different ways to add up to the value of coins
+// makeup_amount(22, list(1, 10, 5, 20, 1, 5, 1, 50));
+function makeup_amount(x, coins) {
+    if (x === 0) {
+        return list(null);
+    } else if (x < 0 || is_null(coins)) {
+        return null;
+    } else {
+        // Combinations that do not use the head coin.
+        const combi_A = makeup_amount(x, tail(coins));
+        
+        // Combinations of the remaining amount without the head coin
+        const combi_B = makeup_amount(x - head(coins), tail(coins));
+
+        // Combinations with the head coins added
+        const combi_C = map(c => pair(head(coins), c), combi_B);
+
+        return append(combi_A, combi_C);
+    }
+}
+
+// Finding all subsets of a set
+function subsets(lst) {
+    if (is_null(lst)) {
+        return list(null);
+    } else {
+        const dont_take = subsets(tail(lst));
+        const take = map(x => pair(head(lst), x), dont_take);
+        return append(dont_take, take);
+    }
+}
+
+//fast power for integer numbers
+// Time complexity = O(log(n))
+// Space complexity = O(log(n))
+function fast_power(b, n) {
+    return n < 0
+          ? 1 / fast_power(b, - n)
+          : n === 0
+          ? 1
+          : n % 2 === 0
+          ? math_pow(fast_power(b, n/2), 2)
+          : fast_power(b, n - 1) * b;
+}
+
+// Flipping the tree horizontally while negating all nodes
+function negate_bst(bst) {
+    if (is_empty_binary_tree(bst)) {
+        return make_empty_binary_tree();
+    }
+    else {
+        return make_binary_tree_node(
+                negate_bst(right_subtree_of(bst)),
+                -1 * value_of(bst),
+                negate_bst(left_subtree_of(bst)));
+    }
+}
+
+// Thrice and twice
+(thrice(twice(x => 2 * x)))(1); // (2 ^ 2) ^ 3
+((thrice(twice))(x => 2 * x))(1); // 2 ^ (2 ^ 3)
 
 // essence of recursion
 (f => f(f))(f => f(f)); 
