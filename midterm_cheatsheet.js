@@ -135,6 +135,7 @@ T(n) = T(n - 1) + O(n^k) => O(n^(k+1))
 // Not intuitive recurrence relations
 T(n) = T(n / 2) + O(n) => O(n)
 T(n) = 2T(n / 2) + O(1) => O(n)
+T(n) = 2T(n / 2) + O(n) => O(nlogn)
 T(n) = 2T(n - 1) + O(1) => O(2^n)
 
 // Order of growth
