@@ -17,7 +17,7 @@ function make_withdraw(balance, password) {
 }
 
 const acc = make_withdraw(100, "my_password");
-acc(30, "his_passcode");
+acc(30, "his_passcode"); 
 acc(10, "sesame");
 acc(15, "canola");
 acc(25, "olive");
