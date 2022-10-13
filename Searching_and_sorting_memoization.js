@@ -32,6 +32,7 @@ function fib(n) {
 }
 
 // Question 2b
+// Less wastage as we're not using an array to store all the values
 function fib_2(n) {
     if (n <= 1) {
         return n;
@@ -39,16 +40,18 @@ function fib_2(n) {
     
     let first = 0;
     let second = 1;
-    let temp = 0;
     
     for (let i = 2; i <= n; i = i + 1) {
-        temp = first;
-        first = second;
-        second = second + temp;
+        // Relationship of fibonacci, might not work for other patterns
+        second = second + first;
+        first = second - first;
     }
     
     return second;
 }
 
 // Test
-fib_2(0);
+// fib_2(0);
+
+// Question 3
+function 
