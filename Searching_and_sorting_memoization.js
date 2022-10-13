@@ -43,4 +43,4 @@ function fib_2(n) {
 }
 
 // Test
-fib(8);
+fib_2(8);
