@@ -52,6 +52,3 @@ function fib_2(n) {
 
 // Test
 // fib_2(0);
-
-// Question 3
-function 
