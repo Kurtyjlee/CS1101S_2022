@@ -17,6 +17,10 @@ function make_optimized_search(A) {
 
 // Question 2a
 function fib(n) {
+    if (n <= 1) {
+        return n;
+    }
+    
     const arr = [0, 1];
     
     // Main loop
@@ -29,6 +33,10 @@ function fib(n) {
 
 // Question 2b
 function fib_2(n) {
+    if (n <= 1) {
+        return n;
+    }
+    
     let first = 0;
     let second = 1;
     let temp = 0;
@@ -43,4 +51,4 @@ function fib_2(n) {
 }
 
 // Test
-fib_2(8);
+fib_2(0);
