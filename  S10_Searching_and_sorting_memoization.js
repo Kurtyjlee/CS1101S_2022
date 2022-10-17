@@ -19,3 +19,44 @@ function bubblesort_list(L) {
 const LL = list(3, 5, 2, 4, 1);
 bubblesort_list(LL);
 LL;
+
+// question 3
+function read(n, k) {
+    return mem[n] === undefined
+           ? undefined
+           : mem[n][k];
+}
+
+function write(n, k, value) {
+    if (mem[n] === undefined) {
+        mem[n] = [];
+    }
+    mem[n][k] = value;
+}
+
+function first_denomination(kinds_of_coins) {
+    return kinds_of_coins === 1 ? 5 : 
+           kinds_of_coins === 2 ? 10 : 
+           kinds_of_coins === 3 ? 20 : 
+           kinds_of_coins === 4 ? 50 : 
+           kinds_of_coins === 5 ? 100 : 0;
+}
+
+const mem = [];
+
+function m_cc(amount, kinds_of_coins) {
+    if (read(amount, kinds_of_coins) !== undefined) {
+        return read(amount, kinds_of_coins);
+    } else {
+        const result = amount === 0
+                        ? 1
+                        : amount < 0 || kinds_of_coins === 0
+                        ? 0
+                        : m_cc(amount, kinds_of_coins - 1) + 
+                          m_cc(amount - first_denomination(kinds_of_coins), kinds_of_coins);
+        write(amount, kinds_of_coins, result);
+        return result;
+    }
+}
+
+
