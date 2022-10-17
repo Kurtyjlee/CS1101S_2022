@@ -1,4 +1,5 @@
 // Question 2b
+// First iteration
 // function bubblesort_list(L) {
 //     function sort(lst, counter) {
 //         if (counter === 0) {
@@ -16,6 +17,7 @@
 //     }
 // }
 
+// 2nd iteration
 function bubblesort_list(L) {
     function swap(xs, ys) {
         if (is_null(ys) || head(xs) <= head(ys)) {
@@ -24,7 +26,7 @@ function bubblesort_list(L) {
             let temp = head(xs);
             set_head(xs, head(ys));
             set_head(tail(xs), temp);
-            return swap(ys, tail(ys));
+            swap(ys, tail(ys));
         }
     }
     
@@ -37,7 +39,7 @@ function bubblesort_list(L) {
     }
 }
 
-const LL = list(1, 2, 3, 5, 4);
+const LL = list(5, 4, 3, 2, 1);
 bubblesort_list(LL);
 LL;
 
