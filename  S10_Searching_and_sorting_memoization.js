@@ -1,2 +1,1 @@
-// Question 2b
 
