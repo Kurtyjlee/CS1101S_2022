@@ -1,7 +1,5 @@
 // Question 2b
 function bubblesort_list(L) {
-    let end = length(L) - 1;
-    
     function sort(lst) {
         if (is_null(lst) || is_null(tail(lst))) {
             return lst;
@@ -12,7 +10,9 @@ function bubblesort_list(L) {
         }
         return sort(tail(lst));
     }
-    for (let i = 0; i < )
+    for (let i = 0; i < length(L); i = i + 1) {
+        sort(L);
+    }
 }
 
 const LL = list(3, 5, 2, 4, 1);
