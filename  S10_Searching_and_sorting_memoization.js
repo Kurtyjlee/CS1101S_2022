@@ -21,21 +21,21 @@
 function bubblesort_list(L) {
     function swap(xs, ys) {
         if (is_null(ys) || head(xs) <= head(ys)) {
-            return ys;
+            return xs;
         } else {
             let temp = head(xs);
             set_head(xs, head(ys));
             set_head(tail(xs), temp);
             swap(ys, tail(ys));
+            return xs;
         }
     }
     
     if (is_null(L) || is_null(tail(L))) {
         return L;
     } else {
-        // sort first then swap recursively
-        bubblesort_list(tail(L));
-        swap(L, tail(L));
+        const sorted = bubblesort_list(tail(L));
+        return swap(L, sorted);
     }
 }
 
