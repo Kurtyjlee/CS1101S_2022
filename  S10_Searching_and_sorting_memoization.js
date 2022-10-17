@@ -1,17 +1,18 @@
 // Question 2b
 function bubblesort_list(L) {
-    function sort(lst) {
-        if (is_null(lst) || is_null(tail(lst))) {
+    function sort(lst, counter) {
+        if (counter === 0) {
             return lst;
         } else if (head(lst) > head(tail(lst))) {
             let temp = head(lst);
             set_head(lst, head(tail(lst)));
             set_head(tail(lst), temp);
         }
-        return sort(tail(lst));
+        return sort(tail(lst), counter - 1);
     }
-    for (let i = 0; i < length(L); i = i + 1) {
-        sort(L);
+    
+    for (let i = length(L) - 1; i > 0; i = i - 1) {
+        sort(L, i);
     }
 }
 
