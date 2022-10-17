@@ -17,7 +17,7 @@
 //     }
 // }
 
-// 2nd iteration
+// 2nd iteration, dont actually need to return anything
 function bubblesort_list(L) {
     function swap(xs, ys) {
         if (is_null(ys) || head(xs) <= head(ys)) {
@@ -27,15 +27,14 @@ function bubblesort_list(L) {
             set_head(xs, head(ys));
             set_head(tail(xs), temp);
             swap(ys, tail(ys));
-            return xs;
         }
     }
     
     if (is_null(L) || is_null(tail(L))) {
         return L;
     } else {
-        const sorted = bubblesort_list(tail(L));
-        return swap(L, sorted);
+        bubblesort_list(tail(L));
+        swap(L, tail(L));
     }
 }
 
