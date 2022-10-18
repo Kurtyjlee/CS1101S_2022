@@ -134,7 +134,6 @@ function rotate_matrix(M) {
         }
         start = start + 1;
     }
-    
     for (let i = 0; i < array_length(M); i = i + 1) {
         reverse(M[i]);
     }
