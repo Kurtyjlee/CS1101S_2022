@@ -120,7 +120,7 @@ function reverse(arr) {
         let temp = arr[i];
         arr[i] = arr[end];
         arr[end] = temp;
-        end = end - 1;
+        end = end - 1; 
     }
 }
 
