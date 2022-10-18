@@ -38,40 +38,40 @@
 //     }
 // }
 
-// 3rd iteration, dont actually need to return anything
-function bubblesort_list(L) {
-    if (is_null(L) || is_null(tail(L))) {
-        return L;
-    } else {
-        bubblesort_list(tail(L));
-        if (head(L) > head(tail(L))) {
-            const temp = head(L);
-            set_head(L, head(tail(L)));
-            set_head(tail(L), temp);
-            bubblesort_list(tail(L));
-        }
-    }
-}
+// // 3rd iteration, dont actually need to return anything
+// function bubblesort_list(L) {
+//     if (is_null(L) || is_null(tail(L))) {
+//         return L;
+//     } else {
+//         bubblesort_list(tail(L));
+//         if (head(L) > head(tail(L))) {
+//             const temp = head(L);
+//             set_head(L, head(tail(L)));
+//             set_head(tail(L), temp);
+//             bubblesort_list(tail(L));
+//         }
+//     }
+// }
 
-// Bubblesort answer
-function bubblesort_list(L) {
-    const len = length(L);
-    for (let i = len - 1; i >= 1; i = i - 1) {
-        let p = L;
-        for (let j = 0; j < i; j = j + 1) {
-            if (head(p) > head(tail(p))) {
-                const temp = head(p);
-                set_head(p, head(tail(p)));
-                set_head(tail(p), temp);
-            }
-            p = tail(p);
-        }
-    }
-}
+// // Bubblesort answer
+// function bubblesort_list(L) {
+//     const len = length(L);
+//     for (let i = len - 1; i >= 1; i = i - 1) {
+//         let p = L;
+//         for (let j = 0; j < i; j = j + 1) {
+//             if (head(p) > head(tail(p))) {
+//                 const temp = head(p);
+//                 set_head(p, head(tail(p)));
+//                 set_head(tail(p), temp);
+//             }
+//             p = tail(p);
+//         }
+//     }
+// }
  
-const LL = list(5, 4, 3, 2, 1);
-bubblesort_list(LL);
-LL;
+// const LL = list(5, 4, 3, 2, 1);
+// bubblesort_list(LL);
+// LL;
 
 // // question 3
 // function read(n, k) {
@@ -112,4 +112,34 @@ LL;
 //     }
 // }
 
+// In class attempt, works
+function reverse(arr) {
+    let half = math_floor(array_length(arr) / 2);
+    let end = array_length(arr) - 1;
+    for (let i = 0; i < half; i = i + 1) {
+        let temp = arr[i];
+        arr[i] = arr[end];
+        arr[end] = temp;
+        end = end - 1;
+    }
+}
 
+function rotate_matrix(M) {
+    let start = 1;
+    for (let i = 0; i < array_length(M); i = i + 1) {
+        for (let j = start; j < array_length(M); j = j + 1) {
+            let temp = M[i][j];
+            M[i][j] = M[j][i];
+            M[j][i] = temp;
+        }
+        start = start + 1;
+    }
+    
+    for (let i = 0; i < array_length(M); i = i + 1) {
+        reverse(M[i]);
+    }
+}
+
+const M = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]];
+rotate_matrix(M);
+M;
