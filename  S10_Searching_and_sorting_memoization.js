@@ -53,7 +53,7 @@ function bubblesort_list(L) {
     }
 }
 
-const LL = list(1, 2, 3, 4, 5);
+const LL = list(5, 4, 3, 2, 1);
 bubblesort_list(LL);
 LL;
 
