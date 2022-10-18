@@ -53,21 +53,21 @@
 //     }
 // }
 
-// // Bubblesort answer
-// function bubblesort_list(L) {
-//     const len = length(L);
-//     for (let i = len - 1; i >= 1; i = i - 1) {
-//         let p = L;
-//         for (let j = 0; j < i; j = j + 1) {
-//             if (head(p) > head(tail(p))) {
-//                 const temp = head(p);
-//                 set_head(p, head(tail(p)));
-//                 set_head(tail(p), temp);
-//             }
-//             p = tail(p);
-//         }
-//     }
-// }
+// Bubblesort answer
+function bubblesort_list(L) {
+    const len = length(L);
+    for (let i = len - 1; i >= 1; i = i - 1) {
+        let p = L;
+        for (let j = 0; j < i; j = j + 1) {
+            if (head(p) > head(tail(p))) {
+                const temp = head(p);
+                set_head(p, head(tail(p)));
+                set_head(tail(p), temp);
+            }
+            p = tail(p);
+        }
+    }
+}
  
 // const LL = list(5, 4, 3, 2, 1);
 // bubblesort_list(LL);
@@ -137,6 +137,20 @@ function rotate_matrix(M) {
     for (let i = 0; i < array_length(M); i = i + 1) {
         reverse(M[i]);
     }
+}
+
+// answer
+function rotate_matrix_1(M) {
+    const n = array_length(M);
+    
+    function swap(r1, c1, r2, c2) {
+        const temp = M[r1][c1];
+        M[r1][c1] = M[r2][c2];
+        M[r2][c2] = temp;
+    }
+    
+    for (let r = 0)
+    
 }
 
 const M = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]];
