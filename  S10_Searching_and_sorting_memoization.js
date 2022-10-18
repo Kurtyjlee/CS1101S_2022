@@ -17,28 +17,43 @@
 //     }
 // }
 
-// 2nd iteration, dont actually need to return anything
-function bubblesort_list(L) {
-    function swap(xs, ys) {
-        if (is_null(ys) || head(xs) <= head(ys)) {
-            return xs;
-        } else {
-            let temp = head(xs);
-            set_head(xs, head(ys));
-            set_head(tail(xs), temp);
-            swap(ys, tail(ys));
-        }
-    }
+// // 2nd iteration, dont actually need to return anything
+// function bubblesort_list(L) {
+//     function swap(xs, ys) {
+//         if (is_null(ys) || head(xs) <= head(ys)) {
+//             return xs;
+//         } else {
+//             let temp = head(xs);
+//             set_head(xs, head(ys));
+//             set_head(tail(xs), temp);
+//             swap(ys, tail(ys));
+//         }
+//     }
     
+//     if (is_null(L) || is_null(tail(L))) {
+//         return L;
+//     } else {
+//         bubblesort_list(tail(L));
+//         swap(L, tail(L));
+//     }
+// }
+
+// 3rd iteration, dont actually need to return anything
+function bubblesort_list(L) {
     if (is_null(L) || is_null(tail(L))) {
         return L;
     } else {
         bubblesort_list(tail(L));
-        swap(L, tail(L));
+        if (head(L) > head(tail(L))) {
+            const temp = head(L);
+            set_head(L, head(tail(L)));
+            set_head(tail(L), temp);
+            bubblesort_list(tail(L));
+        }
     }
 }
 
-const LL = list(23, 45, 12, 34, 5, 2, 6, 34, 2);
+const LL = list(1, 2, 3, 4, 5);
 bubblesort_list(LL);
 LL;
 
