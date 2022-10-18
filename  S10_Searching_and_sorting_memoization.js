@@ -38,21 +38,37 @@
 //     }
 // }
 
-// 3rd iteration, dont actually need to return anything
+// // 3rd iteration, dont actually need to return anything
+// function bubblesort_list(L) {
+//     if (is_null(L) || is_null(tail(L))) {
+//         return L;
+//     } else {
+//         bubblesort_list(tail(L));
+//         if (head(L) > head(tail(L))) {
+//             const temp = head(L);
+//             set_head(L, head(tail(L)));
+//             set_head(tail(L), temp);
+//             bubblesort_list(tail(L));
+//         }
+//     }
+// }
+
+// Bubblesort answer
 function bubblesort_list(L) {
-    if (is_null(L) || is_null(tail(L))) {
-        return L;
-    } else {
-        bubblesort_list(tail(L));
-        if (head(L) > head(tail(L))) {
-            const temp = head(L);
-            set_head(L, head(tail(L)));
-            set_head(tail(L), temp);
-            bubblesort_list(tail(L));
+    const len = length(L);
+    for (let i = len - 1; i >= 1; i = i - 1) {
+        let p = L;
+        for (let j = 0; j < i; j = j + 1) {
+            if (head(p) > head(tail(p))) {
+                const temp = head(p);
+                set_head(p, head(tail(p)));
+                set_head(tail(p), temp);
+            }
+            p = tail(p);
         }
     }
 }
-
+ 
 const LL = list(5, 4, 3, 2, 1);
 bubblesort_list(LL);
 LL;
