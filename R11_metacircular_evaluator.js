@@ -84,7 +84,7 @@ function eval_declaration(component, env) {
 }
 
 function list_of_values(exprs, env) {
-    return map( comp => evaluate(comp, env), exprs); 
+    return map(comp => evaluate(comp, env), exprs); 
 }
 
 function apply(fun, args) {
@@ -454,6 +454,29 @@ function parse_and_evaluate(program) {
                     the_global_environment);
 }
 
+// lazy logical composition
+// the syntax predicate
+function is_logical_composition(component) {
+    return is_tagged_list(component, "logical_composition");
+}
+// selectors
+function logical_symbol(comp) { 
+    return list_ref(comp, 1);
+}
+function logical_composition_first_component(comp) {
+    return list_ref(comp, 2); }
+function logical_composition_second_component(comp) { 
+    return list_ref(comp, 3);
+}
+// helper to make a conditional expression
+function make_conditional_expression(pred, cons, alt) { 
+    return list("conditional_expression", pred, cons, alt);
+}
+// helper to make a literal value
+function make_literal(value) { 
+    return list("literal", value);
+}
+
 // testing
 
 parse_and_evaluate("1 + 2;");
@@ -463,18 +486,53 @@ parse_and_evaluate("1; 2; 3;");
 parse_and_evaluate("true ? 2 : 3;");
 
 parse_and_evaluate("8 + 34; true ? 1 + 2 : 17;");
+display_list(parse("true ? 1 + 2 : 17;"));
 
-parse_and_evaluate(`
-const y = 4; 
-{
-    const x = y + 7; 
-    x * 2;
-}
-    `);
+// parse_and_evaluate(`
+// const y = 4; 
+// {
+//     const x = y + 7; 
+//     x * 2;
+// }
+//     `);
 
-parse_and_evaluate(`
-function fact(n) {
-    n === 1 ? 1 : n * fact(n - 1);
+// parse_and_evaluate(`
+// function fact(n) {
+//     n === 1 ? 1 : n * fact(n - 1);
+// }
+// fact(4);
+// `);
+
+/*
+Question 1
+1. list("%", (x, y) => x % y) Change the % operator to math_pow
+2. No
+3. The parser does not understand priorities for exponentials
+4. Evaluator cannot be changed to get the right results. (Actually, can make
+    an is_exponential function? then evaluate as such?)
+
+Question 2
+Build a new function with the logic required to check for && and ||.
+The idea is to turn the logical composition into a conditional expression
+
+function logical_composition_to_conditional_expression(component, env) {
+    // turn the thing into a conditional
+    return logical_symbol(component) === '&&'
+            ? make_conditional_expression(
+                logical_composition_first_component(component),
+                logical_composition_second_component(compoent),
+                make_literal(false)
+            : make_conditional_expression(
+                logical_composition_first_component(component),
+                make_literal(true),
+                logical_composition_second_component(component));
 }
-fact(4);
-`);
+
+Can also use the && and || operators within source for MCE
+
+Question 3
+Add the definition of parse in the primitive functions into evaluate.
+Now the MCE knows how to evaluate the parse()
+
+*/
+
