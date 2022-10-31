@@ -449,16 +449,40 @@ const the_global_environment = setup_environment();
 // running the evaluator
 // 
 
+// Question 1
+function rearrange(pp) {
+    const block = list_ref(pp, 1);
+    set_tail(pp, list(append(filter(x => list_ref(x, 0) === "function_declaration", block),
+                             filter(x => list_ref(x, 0) !== "function_declaration", block))));
+    return pp;
+}
+
 function parse_and_evaluate(program) {
-    return evaluate(make_block(parse(program)), 
+    return evaluate(make_block(rearrange(parse(program))), 
                     the_global_environment);
 }
 
 // test cases
+// display_list(parse(`  
+//     function f(y) {		
+//         y + 34;
+//     }
+//     const x = f(8);
+//     const y = 7;
+//     x;
+// `));
+// display_list(rearrange(parse(`  
+//     const x = f(8);
+//     function f(y) {		
+//       y + 34;
+//     }
+//     x;
+// `)));
+
 parse_and_evaluate(`  
     const x = f(8);
     function f(y) {		
-       y + 34;
+      y + 34;
     }
     x;
 `);
