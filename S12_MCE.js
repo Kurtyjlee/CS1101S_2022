@@ -24,7 +24,8 @@ function evaluate(component, env) {
            ? eval_declaration(component, env)
            : is_application(component)
            ? apply(evaluate(function_expression(component), env),
-                   list_of_values(arg_expressions(component), env))
+                   list_of_values(arg_expressions(component), env),
+                   env)
            : is_operator_combination(component)
            ? evaluate(operator_combination_to_application(component),
                       env)
@@ -36,8 +37,16 @@ function evaluate(component, env) {
 
 function eval_conditional(comp, env) {
    if (is_truthy(evaluate(conditional_predicate(comp), env))) {
+       // Not a declaration
+       if (is_null(scan_out_declarations(conditional_alternative(comp)))) {
+           error(conditional_alternative(comp), "function does not exist");
+       }
        return evaluate(conditional_consequent(comp), env);
    } else {
+       // Not a declaration
+       if (is_null(scan_out_declarations(conditional_consequent(comp)))) {
+           error(conditional_consequent(comp), "function does not exist");
+       }
        return evaluate(conditional_alternative(comp), env);
    }
 }
@@ -89,7 +98,7 @@ function list_of_values(exprs, env) {
     return map( comp => evaluate(comp, env), exprs); 
 }
 
-function apply(fun, args) {
+function apply(fun, args, env) {
     return is_primitive_function(fun)
            ? apply_primitive_function(fun, args) 
            : is_compound_function(fun)
@@ -98,6 +107,8 @@ function apply(fun, args) {
                           function_parameters(fun), 
                           args, 
                           function_environment(fun)))
+           : lookup_symbol_value(fun, env)
+           ? error(fun, "Function does not exist")
            : error(fun, "Unknown function type:");
 }
 
@@ -498,36 +509,37 @@ function parse_and_evaluate(program) {
 // test cases
 
 // Question 1
-display_list(rearrange(parse(`  
-{
-    function g(x) {
-        x;
-    }
-    const x = f(8);
-    function f(y) { 
-        return y + 34;
-    }
-    x; 
-}
-`)));
+// display_list(rearrange(parse(`  
+// {
+//     function g(x) {
+//         x;
+//     }
+//     const x = f(8);
+//     function f(y) { 
+//         return y + 34;
+//     }
+//     x; 
+// }
+// `)));
 
-display_list(rearrange(parse(`  
-{
-    function g(x) {
-        x + 23;
-    } 
-    const x = 0;
-    function f(y) {
-        const a = h(1);
-        function h(z) {
-            z * 2;
-        }
-        a;
-    }
-    f(2);
-}
-`)));
+// display_list(rearrange(parse(`  
+// {
+//     function g(x) {
+//         x + 23;
+//     } 
+//     const x = 0;
+//     function f(y) {
+//         const a = h(1);
+//         function h(z) {
+//             z * 2;
+//         }
+//         a;
+//     }
+//     f(2);
+// }
+// `)));
 
 // Question 2
-// display_list(parse("false ? abracadabra(simsalabim) : 42;"));
-// display_list(rearrange(parse("false ? abracadabra(simsalabim) : 42;")));
+display_list(parse("false ? abracadabra(simsalabim) : 42;"));
+display_list(rearrange(parse("false ? abracadabra(simsalabim) : 42;")));
+parse_and_evaluate("false ? abracadabra(simsalabim) : 42;");
