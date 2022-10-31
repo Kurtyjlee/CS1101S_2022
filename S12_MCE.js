@@ -35,9 +35,11 @@ function evaluate(component, env) {
 }
 
 function eval_conditional(comp, env) {
-   return is_truthy(evaluate(conditional_predicate(comp), env))
-          ? evaluate(conditional_consequent(comp), env)
-          : evaluate(conditional_alternative(comp), env);
+   if (is_truthy(evaluate(conditional_predicate(comp), env))) {
+       return evaluate(conditional_consequent(comp), env);
+   } else {
+       return evaluate(conditional_alternative(comp), env);
+   }
 }
 
 function eval_sequence(stmts, env) { 
@@ -451,9 +453,17 @@ const the_global_environment = setup_environment();
 
 // Question 1
 function rearrange(pp) {
-    const block = list_ref(pp, 1);
-    set_tail(pp, list(append(filter(x => list_ref(x, 0) === "function_declaration", block),
-                             filter(x => list_ref(x, 0) !== "function_declaration", block))));
+    if (is_null(pp)) {
+        return pp;
+    } else {
+        rearrange(tail(pp));
+        if (head(pp) === "sequence") {
+            const target = "function_declaration";
+            set_tail(pp, list(append(filter(x => list_ref(x, 0) === target, list_ref(pp, 1)),
+                                     filter(x => list_ref(x, 0) !== target, list_ref(pp, 1)))));
+        }
+        
+    }
     return pp;
 }
 
@@ -463,6 +473,8 @@ function parse_and_evaluate(program) {
 }
 
 // test cases
+
+// Question 1
 // display_list(parse(`  
 //     function f(y) {		
 //         y + 34;
@@ -471,18 +483,35 @@ function parse_and_evaluate(program) {
 //     const y = 7;
 //     x;
 // `));
+display_list(rearrange(parse(`  
+    const x = f(8);
+    function f(y) {	
+        y + 34;
+    }
+    {
+        y + 24;
+        function g(x) {
+            x;
+        }
+    }
+    x;
+`)));
 // display_list(rearrange(parse(`  
+//     const x = f(8);
+//     function f(y) {	
+//         y + 34;
+//     }
+//     x;
+// `)));
+
+// parse_and_evaluate(`  
 //     const x = f(8);
 //     function f(y) {		
 //       y + 34;
 //     }
 //     x;
-// `)));
+// `);
 
-parse_and_evaluate(`  
-    const x = f(8);
-    function f(y) {		
-      y + 34;
-    }
-    x;
-`);
+// Question 2
+// display_list(parse("false ? abracadabra(simsalabim) : 42;"));
+// display_list(rearrange(parse("false ? abracadabra(simsalabim) : 42;")));
