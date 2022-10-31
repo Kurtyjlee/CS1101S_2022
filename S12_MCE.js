@@ -451,21 +451,44 @@ const the_global_environment = setup_environment();
 // running the evaluator
 // 
 
+/*
+// sequences
+
+function is_sequence(stmt) {
+   return is_tagged_list(stmt, "sequence");
+}
+function sequence_statements(stmt) {   
+   return head(tail(stmt));
+}
+function first_statement(stmts) {
+   return head(stmts);
+}
+function rest_statements(stmts) {
+   return tail(stmts);
+}
+function is_empty_sequence(stmts) {
+   return is_null(stmts);
+}
+function is_last_statement(stmts) {
+   return is_null(tail(stmts));
+}
+*/
+
 // Question 1
 function rearrange(pp) {
-    if (is_null(pp)) {
-        return pp;
-    } else {
-        rearrange(tail(pp));
-        if (head(pp) === "sequence") {
+    if (is_list(pp) && !is_null(pp)) {
+        if (list_ref(pp, 0) === "sequence") {
+            map(rearrange, list_ref(pp, 1));
             const target = "function_declaration";
             set_tail(pp, list(append(filter(x => list_ref(x, 0) === target, list_ref(pp, 1)),
                                      filter(x => list_ref(x, 0) !== target, list_ref(pp, 1)))));
+        } else {
+            map(rearrange, pp);
         }
-        
     }
     return pp;
 }
+
 
 function parse_and_evaluate(program) {
     return evaluate(make_block(rearrange(parse(program))), 
@@ -475,42 +498,35 @@ function parse_and_evaluate(program) {
 // test cases
 
 // Question 1
-// display_list(parse(`  
-//     function f(y) {		
-//         y + 34;
-//     }
-//     const x = f(8);
-//     const y = 7;
-//     x;
-// `));
 display_list(rearrange(parse(`  
+{
+    function g(x) {
+        x;
+    }
     const x = f(8);
-    function f(y) {	
-        y + 34;
+    function f(y) { 
+        return y + 34;
     }
-    {
-        y + 24;
-        function g(x) {
-            x;
-        }
-    }
-    x;
+    x; 
+}
 `)));
-// display_list(rearrange(parse(`  
-//     const x = f(8);
-//     function f(y) {	
-//         y + 34;
-//     }
-//     x;
-// `)));
 
-// parse_and_evaluate(`  
-//     const x = f(8);
-//     function f(y) {		
-//       y + 34;
-//     }
-//     x;
-// `);
+display_list(rearrange(parse(`  
+{
+    function g(x) {
+        x + 23;
+    } 
+    const x = 0;
+    function f(y) {
+        const a = h(1);
+        function h(z) {
+            z * 2;
+        }
+        a;
+    }
+    f(2);
+}
+`)));
 
 // Question 2
 // display_list(parse("false ? abracadabra(simsalabim) : 42;"));
