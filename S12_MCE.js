@@ -35,15 +35,14 @@ function evaluate(component, env) {
            : error(component, "Unknown component:");
 }
 
+// Question 2 scan_our_declarations
 function eval_conditional(comp, env) {
    if (is_truthy(evaluate(conditional_predicate(comp), env))) {
-       // Not a declaration
        if (is_null(scan_out_declarations(conditional_alternative(comp)))) {
            error(conditional_alternative(comp), "function does not exist");
        }
        return evaluate(conditional_consequent(comp), env);
    } else {
-       // Not a declaration
        if (is_null(scan_out_declarations(conditional_consequent(comp)))) {
            error(conditional_consequent(comp), "function does not exist");
        }
@@ -98,6 +97,7 @@ function list_of_values(exprs, env) {
     return map( comp => evaluate(comp, env), exprs); 
 }
 
+// Function 2, lookup_symbol_value
 function apply(fun, args, env) {
     return is_primitive_function(fun)
            ? apply_primitive_function(fun, args) 
