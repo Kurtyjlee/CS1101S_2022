@@ -23,6 +23,9 @@ function evaluate(component, env) {
            : is_declaration(component)
            ? eval_declaration(component, env)
            : is_application(component)
+           // function_expression() will extract the function name 
+           // and evaluate to find the value of the name, aka
+           // finds out that the function does
            ? apply(evaluate(function_expression(component), env),
                    list_of_values(arg_expressions(component), env),
                    env)
