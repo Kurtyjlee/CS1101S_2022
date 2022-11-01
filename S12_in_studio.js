@@ -13,8 +13,6 @@ function evaluate(component, env) {
            : is_conditional(component)
            ? eval_conditional(component, env)
            : is_sequence(component)
-           // Question 1 answer
-           // ? eval_sequence(reorder_statements(sequence_statements(component)), env)
            ? eval_sequence(sequence_statements(component), env)
            : is_name(component)
            ? lookup_symbol_value(symbol_of_name(component), env)
@@ -25,12 +23,8 @@ function evaluate(component, env) {
            : is_declaration(component)
            ? eval_declaration(component, env)
            : is_application(component)
-           // function_expression() will extract the function name 
-           // and evaluate to find the value of the name, aka
-           // finds out that the function does
            ? apply(evaluate(function_expression(component), env),
-                   list_of_values(arg_expressions(component), env),
-                   env)
+                   list_of_values(arg_expressions(component), env))
            : is_operator_combination(component)
            ? evaluate(operator_combination_to_application(component),
                       env)
@@ -40,19 +34,10 @@ function evaluate(component, env) {
            : error(component, "Unknown component:");
 }
 
-// Question 2 scan_our_declarations
 function eval_conditional(comp, env) {
-  if (is_truthy(evaluate(conditional_predicate(comp), env))) {
-    //   if (is_null(scan_out_declarations(conditional_alternative(comp)))) {
-    //       error(conditional_alternative(comp), "function does not exist");
-    //   }
-       return evaluate(conditional_consequent(comp), env);
-   } else {
-    //   if (is_null(scan_out_declarations(conditional_consequent(comp)))) {
-    //       error(conditional_consequent(comp), "function does not exist");
-    //   }
-       return evaluate(conditional_alternative(comp), env);
-   }
+   return is_truthy(evaluate(conditional_predicate(comp), env))
+          ? evaluate(conditional_consequent(comp), env)
+          : evaluate(conditional_alternative(comp), env);
 }
 
 function eval_sequence(stmts, env) { 
@@ -102,19 +87,15 @@ function list_of_values(exprs, env) {
     return map( comp => evaluate(comp, env), exprs); 
 }
 
-// Function 2, lookup_symbol_value
-function apply(fun, args, env) {
+function apply(fun, args) {
     return is_primitive_function(fun)
            ? apply_primitive_function(fun, args) 
            : is_compound_function(fun)
-           // The function_environment probably contains the prog env
            ? evaluate(function_body(fun),
                       extend_environment( 
                           function_parameters(fun), 
                           args, 
                           function_environment(fun)))
-           : lookup_symbol_value(fun, env)
-           ? error(fun, "Function does not exist")
            : error(fun, "Unknown function type:");
 }
 
@@ -339,31 +320,25 @@ function extend_environment(symbols, vals, base_env) {
                    stringify(vals));
 }
 
-// Read operation
 function lookup_symbol_value(symbol, env) {
     function env_loop(env) {
         function scan(symbols, vals) {
             return is_null(symbols)
-                   // recursive loop to look at enclosing
                    ? env_loop(enclosing_environment(env))
                    : symbol === head(symbols)
-                   // If found, return the value
                    ? head(vals)
-                   // Recursive loop to look for the next symbol
                    : scan(tail(symbols), tail(vals));
         }
         if (env === the_empty_environment) {
             error(symbol, "unbound name");
         } else {
             const frame = first_frame(env);
-            // Initial function call for scan
             return scan(frame_symbols(frame), frame_values(frame));
         }
     }
     return env_loop(env);
 }
 
-// Write operation, similar to lookup_symbol_value
 function assign_symbol_value(symbol, val, env) {
     function env_loop(env) {
         function scan(symbols, vals) {
@@ -474,96 +449,15 @@ const the_global_environment = setup_environment();
 // running the evaluator
 // 
 
-/*
-// sequences
-
-function is_sequence(stmt) {
-   return is_tagged_list(stmt, "sequence");
-}
-function sequence_statements(stmt) {   
-   return head(tail(stmt));
-}
-function first_statement(stmts) {
-   return head(stmts);
-}
-function rest_statements(stmts) {
-   return tail(stmts);
-}
-function is_empty_sequence(stmts) {
-   return is_null(stmts);
-}
-function is_last_statement(stmts) {
-   return is_null(tail(stmts));
-}
-*/
-
-// Question 1, attempt
-function rearrange(pp) {
-    if (is_list(pp) && !is_null(pp)) {
-        if (list_ref(pp, 0) === "sequence") {
-            map(rearrange, list_ref(pp, 1));
-            const target = "function_declaration";
-            set_tail(pp, list(append(filter(x => list_ref(x, 0) === target, list_ref(pp, 1)),
-                                     filter(x => list_ref(x, 0) !== target, list_ref(pp, 1)))));
-        } else {
-            map(rearrange, pp);
-        }
-    }
-    return pp;
-}
-
-// Question 1, answer
-// Goes through the sequence
-// If function then put on top of the list
-// If not function then put at the bottom of the list
-function reorder_statement(stmts) {
-    function split_statements(stmts) {
-        return null;
-    }
-}
-
 function parse_and_evaluate(program) {
-    return evaluate(make_block(rearrange(parse(program))), 
+    return evaluate(make_block(parse(program)), 
                     the_global_environment);
 }
 
-// test cases
-
-// Question 1
-// display_list(rearrange(parse(`  
-// {
-//     function g(x) {
-//         x;
-//     }
-//     const x = f(8);
-//     function f(y) { 
-//         return y + 34;
-//     }
-//     x; 
-// }
-// `)));
-
-// display_list(rearrange(parse(`  
-// {
-//     function g(x) {
-//         x + 23;
-//     } 
-//     const x = 0;
-//     function f(y) {
-//         const a = h(1);
-//         function h(z) {
-//             z * 2;
-//         }
-//         a;
-//     }
-//     f(2);
-// }
-// `)));
-
-// Question 2
-display_list(rearrange(parse("false ? abracadabra(simsalabim) : 42;")));
-parse_and_evaluate("false ? abracadabra(simsalabim) : 42;");
-
-// Answer
-// Look through the tree returned by parse for any name that is not declared
-// The function should consider all types of data types
+// testing
+parse_and_evaluate(`
+const x = y;
+const y = 42;
+const z = "***" + x + "***"; 
+z;
+`);
