@@ -346,7 +346,11 @@ function lookup_symbol_value(symbol, env) {
         } else {
             const frame = first_frame(env);
             // Initial function call for scan
-            return scan(frame_symbols(frame), frame_values(frame));
+            const scanned = scan(frame_symbols(frame), frame_values(frame));
+            if (scanned === "*unassigned*") {
+                return error(symbol, "Cannot access unintialised variable:");
+            }
+            return scanned;
         }
     }
     return env_loop(env);
@@ -366,7 +370,8 @@ function assign_symbol_value(symbol, val, env) {
             error(symbol, "unbound name -- assignment");
         } else {
             const frame = first_frame(env);
-            return scan(frame_symbols(frame), frame_values(frame));
+            const scanned = scan(frame_symbols(frame), frame_values(frame));
+            return scanned;
         }
     }
     return env_loop(env);
@@ -459,15 +464,31 @@ function setup_environment() {
 
 const the_global_environment = setup_environment();
 
+function parse_and_evaluate(program) {
+    return evaluate(make_block(parse(program)), 
+                    the_global_environment);
+}
+
 // 
 // running the evaluator
 // 
 
 // Source
-const x = y;
-const y = 42;
-const z = "***" + x + "***"; 
-z;
+// const x = y;
+// const y = 42;
+// const z = "***" + x + "***"; 
+// z;
 
 //
-parse_and_evalulate
+parse_and_evaluate(`
+    const x = y;
+    const y = 42;
+    const z = "***" + x + "***"; 
+    z;
+`);
+
+// parse_and_evaluate(`
+//     const x = 42;
+//     const z = x; 
+//     z;
+// `);
