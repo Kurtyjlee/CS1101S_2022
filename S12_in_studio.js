@@ -24,7 +24,8 @@ function evaluate(component, env) {
            ? eval_declaration(component, env)
            : is_application(component)
            ? apply(evaluate(function_expression(component), env),
-                   list_of_values(arg_expressions(component), env))
+                   list_of_values(arg_expressions(component), env),
+                   env)
            : is_operator_combination(component)
            ? evaluate(operator_combination_to_application(component),
                       env)
@@ -34,10 +35,13 @@ function evaluate(component, env) {
            : error(component, "Unknown component:");
 }
 
+// Question 2 scan_our_declarations
 function eval_conditional(comp, env) {
-   return is_truthy(evaluate(conditional_predicate(comp), env))
-          ? evaluate(conditional_consequent(comp), env)
-          : evaluate(conditional_alternative(comp), env);
+  if (is_truthy(evaluate(conditional_predicate(comp), env))) {
+       return evaluate(conditional_consequent(comp), env);
+   } else {
+       return evaluate(conditional_alternative(comp), env);
+   }
 }
 
 function eval_sequence(stmts, env) { 
@@ -87,15 +91,19 @@ function list_of_values(exprs, env) {
     return map( comp => evaluate(comp, env), exprs); 
 }
 
-function apply(fun, args) {
+// Function 2, lookup_symbol_value
+function apply(fun, args, env) {
     return is_primitive_function(fun)
            ? apply_primitive_function(fun, args) 
            : is_compound_function(fun)
+           // The function_environment probably contains the prog env
            ? evaluate(function_body(fun),
                       extend_environment( 
                           function_parameters(fun), 
                           args, 
                           function_environment(fun)))
+           : lookup_symbol_value(fun, env)
+           ? error(fun, "Function does not exist")
            : error(fun, "Unknown function type:");
 }
 
@@ -320,25 +328,31 @@ function extend_environment(symbols, vals, base_env) {
                    stringify(vals));
 }
 
+// Read operation
 function lookup_symbol_value(symbol, env) {
     function env_loop(env) {
         function scan(symbols, vals) {
             return is_null(symbols)
+                   // recursive loop to look at enclosing
                    ? env_loop(enclosing_environment(env))
                    : symbol === head(symbols)
+                   // If found, return the value
                    ? head(vals)
+                   // Recursive loop to look for the next symbol
                    : scan(tail(symbols), tail(vals));
         }
         if (env === the_empty_environment) {
             error(symbol, "unbound name");
         } else {
             const frame = first_frame(env);
+            // Initial function call for scan
             return scan(frame_symbols(frame), frame_values(frame));
         }
     }
     return env_loop(env);
 }
 
+// Write operation, similar to lookup_symbol_value
 function assign_symbol_value(symbol, val, env) {
     function env_loop(env) {
         function scan(symbols, vals) {
@@ -448,16 +462,3 @@ const the_global_environment = setup_environment();
 // 
 // running the evaluator
 // 
-
-function parse_and_evaluate(program) {
-    return evaluate(make_block(parse(program)), 
-                    the_global_environment);
-}
-
-// testing
-parse_and_evaluate(`
-const x = y;
-const y = 42;
-const z = "***" + x + "***"; 
-z;
-`);
