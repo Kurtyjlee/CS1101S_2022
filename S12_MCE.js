@@ -105,6 +105,7 @@ function apply(fun, args, env) {
     return is_primitive_function(fun)
            ? apply_primitive_function(fun, args) 
            : is_compound_function(fun)
+           // The function_environment probably contains the prog env
            ? evaluate(function_body(fun),
                       extend_environment( 
                           function_parameters(fun), 
