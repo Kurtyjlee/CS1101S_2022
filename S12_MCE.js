@@ -13,6 +13,8 @@ function evaluate(component, env) {
            : is_conditional(component)
            ? eval_conditional(component, env)
            : is_sequence(component)
+           // Question 1 answer
+           // ? eval_sequence(reorder_statements(sequence_statements(component)), env)
            ? eval_sequence(sequence_statements(component), env)
            : is_name(component)
            ? lookup_symbol_value(symbol_of_name(component), env)
@@ -40,15 +42,15 @@ function evaluate(component, env) {
 
 // Question 2 scan_our_declarations
 function eval_conditional(comp, env) {
-   if (is_truthy(evaluate(conditional_predicate(comp), env))) {
-       if (is_null(scan_out_declarations(conditional_alternative(comp)))) {
-           error(conditional_alternative(comp), "function does not exist");
-       }
+  if (is_truthy(evaluate(conditional_predicate(comp), env))) {
+    //   if (is_null(scan_out_declarations(conditional_alternative(comp)))) {
+    //       error(conditional_alternative(comp), "function does not exist");
+    //   }
        return evaluate(conditional_consequent(comp), env);
    } else {
-       if (is_null(scan_out_declarations(conditional_consequent(comp)))) {
-           error(conditional_consequent(comp), "function does not exist");
-       }
+    //   if (is_null(scan_out_declarations(conditional_consequent(comp)))) {
+    //       error(conditional_consequent(comp), "function does not exist");
+    //   }
        return evaluate(conditional_alternative(comp), env);
    }
 }
@@ -495,7 +497,7 @@ function is_last_statement(stmts) {
 }
 */
 
-// Question 1
+// Question 1, attempt
 function rearrange(pp) {
     if (is_list(pp) && !is_null(pp)) {
         if (list_ref(pp, 0) === "sequence") {
@@ -510,6 +512,15 @@ function rearrange(pp) {
     return pp;
 }
 
+// Question 1, answer
+// Goes through the sequence
+// If function then put on top of the list
+// If not function then put at the bottom of the list
+function reorder_statement(stmts) {
+    function split_statements(stmts) {
+        return null;
+    }
+}
 
 function parse_and_evaluate(program) {
     return evaluate(make_block(rearrange(parse(program))), 
@@ -550,6 +561,10 @@ function parse_and_evaluate(program) {
 // `)));
 
 // Question 2
-display_list(parse("false ? abracadabra(simsalabim) : 42;"));
 display_list(rearrange(parse("false ? abracadabra(simsalabim) : 42;")));
 parse_and_evaluate("false ? abracadabra(simsalabim) : 42;");
+
+// Answer
+// Look through the tree returned by parse for any name that is not declared
+
+
