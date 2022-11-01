@@ -462,3 +462,12 @@ const the_global_environment = setup_environment();
 // 
 // running the evaluator
 // 
+
+// Source
+const x = y;
+const y = 42;
+const z = "***" + x + "***"; 
+z;
+
+//
+parse_and_evalulate
