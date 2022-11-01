@@ -566,5 +566,3 @@ parse_and_evaluate("false ? abracadabra(simsalabim) : 42;");
 
 // Answer
 // Look through the tree returned by parse for any name that is not declared
-
-
