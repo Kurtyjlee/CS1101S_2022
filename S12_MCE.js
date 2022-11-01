@@ -337,25 +337,31 @@ function extend_environment(symbols, vals, base_env) {
                    stringify(vals));
 }
 
+// Read operation
 function lookup_symbol_value(symbol, env) {
     function env_loop(env) {
         function scan(symbols, vals) {
             return is_null(symbols)
+                   // recursive loop to look at enclosing
                    ? env_loop(enclosing_environment(env))
                    : symbol === head(symbols)
+                   // If found, return the value
                    ? head(vals)
+                   // Recursive loop to look for the next symbol
                    : scan(tail(symbols), tail(vals));
         }
         if (env === the_empty_environment) {
             error(symbol, "unbound name");
         } else {
             const frame = first_frame(env);
+            // Initial function call for scan
             return scan(frame_symbols(frame), frame_values(frame));
         }
     }
     return env_loop(env);
 }
 
+// Write operation, similar to lookup_symbol_value
 function assign_symbol_value(symbol, val, env) {
     function env_loop(env) {
         function scan(symbols, vals) {
