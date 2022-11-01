@@ -486,9 +486,3 @@ parse_and_evaluate(`
     const z = "***" + x + "***"; 
     z;
 `);
-
-// parse_and_evaluate(`
-//     const x = 42;
-//     const z = x; 
-//     z;
-// `);
