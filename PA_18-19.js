@@ -652,37 +652,74 @@ function assert(test_name, test_func, truth, dependence) {
 function count_lower_neighbors(emap, r, c) {
 
     // WRITE HERE.
-    
-
+    const rows = array_length(emap);
+    const cols = array_length(emap[0]);
+    if (r >= rows - 1 || c >= cols - 1 || r <= 0 || c <= 0) {
+        return 0;
+    } else {
+        let count = 0;
+        // rows
+        for (let i = -1; i < 2; i = i + 1) {
+            // cols
+            for (let j = -1; j < 2; j = j  + 1) {
+                if (emap[r][c] > emap[r + i][c + j]) {
+                    count = count + 1;
+                }
+            }
+        }
+        return count;
+    }
 }
 
 
-// TASK 3A(I) TESTS
-const emapA1 =
-[[3, 1, 1, 1, 1, 1, 1],
- [1, 1, 1, 1, 2, 3, 1],
- [1, 0, 3, 2, 1, 1, 0],
- [1, 1, 1, 1, 3, 1, 1],
- [1, 2, 1, 1, 3, 1, 3],
- [1, 1, 1, 1, 4, 1, 1]];
-assert("3A(I)_1", () => count_lower_neighbors([[5]], 0, 0), 0, []);
-assert("3A(I)_2", () => count_lower_neighbors(emapA1, 0, 0), 0, []);
-assert("3A(I)_3", () => count_lower_neighbors(emapA1, 5, 4), 0, []);
-assert("3A(I)_4", () => count_lower_neighbors(emapA1, 4, 6), 0, []);
-assert("3A(I)_5", () => count_lower_neighbors(emapA1, 1, 1), 1, []);
-assert("3A(I)_6", () => count_lower_neighbors(emapA1, 2, 2), 8, []);
-assert("3A(I)_7", () => count_lower_neighbors(emapA1, 2, 3), 5, []);
-assert("3A(I)_8", () => count_lower_neighbors(emapA1, 4, 4), 6, []);
+
+// // TASK 3A(I) TESTS
+// const emapA1 =
+// [[3, 1, 1, 1, 1, 1, 1],
+//  [1, 1, 1, 1, 2, 3, 1],
+//  [1, 0, 3, 2, 1, 1, 0],
+//  [1, 1, 1, 1, 3, 1, 1],
+//  [1, 2, 1, 1, 3, 1, 3],
+//  [1, 1, 1, 1, 4, 1, 1]];
+// assert("3A(I)_1", () => count_lower_neighbors([[5]], 0, 0), 0, []);
+// assert("3A(I)_2", () => count_lower_neighbors(emapA1, 0, 0), 0, []);
+// assert("3A(I)_3", () => count_lower_neighbors(emapA1, 5, 4), 0, []);
+// assert("3A(I)_4", () => count_lower_neighbors(emapA1, 4, 6), 0, []);
+// assert("3A(I)_5", () => count_lower_neighbors(emapA1, 1, 1), 1, []);
+// assert("3A(I)_6", () => count_lower_neighbors(emapA1, 2, 2), 8, []);
+// assert("3A(I)_7", () => count_lower_neighbors(emapA1, 2, 3), 5, []);
+// assert("3A(I)_8", () => count_lower_neighbors(emapA1, 4, 4), 6, []);
 
 
-// //===============================================================
-// // TASK 3A(II)
-// //===============================================================
-// function count_peaks(emap) {
+//===============================================================
+// TASK 3A(II)
+//===============================================================
+function count_peaks(emap) {
 
-//     // WRITE HERE.
-
-// }
+    // WRITE HERE.
+    const rows = array_length(emap);
+    const cols = array_length(emap[0]);
+    let total = 0;
+    
+    for (let r = 1; r < rows - 1; r = r + 1) {
+        for (let c = 1; c < cols -1; c = c + 1) {
+            // row
+            let count = 0;
+            for (let i = -1; i < 2; i = i + 1) {
+                // cols
+                for (let j = -1; j < 2; j = j + 1) {
+                    if (emap[r][c] > emap[r + i][c + j]) {
+                        count = count + 1;
+                    }
+                }
+            }
+            if (count === 8) {
+                total = total + 1;
+            }
+        }
+    }
+    return total;
+}
 
 
 // // TASK 3A(II) TESTS
@@ -703,6 +740,7 @@ assert("3A(I)_8", () => count_lower_neighbors(emapA1, 4, 4), 6, []);
 //  [1, 9, 1, 8, 1, 7, 1, 6],
 //  [1, 1, 1, 1, 1, 1, 1, 1],
 //  [8, 1, 9, 1, 8, 1, 9, 1]]; // 9 peaks
+
 // assert("3A(II)_1", () => count_peaks([[5]]),
 //     0, ["count_lower_neighbors"]);
 // assert("3A(II)_2", () => count_peaks([[2,3,4],[3,5,3],[4,3,2]]),
@@ -713,40 +751,69 @@ assert("3A(I)_8", () => count_lower_neighbors(emapA1, 4, 4), 6, []);
 //     9, ["count_lower_neighbors"]);
 
 
-// //===============================================================
-// // TASK 3B
-// //===============================================================
-// function count_islands(emap) {
+//===============================================================
+// TASK 3B
+//===============================================================
+function count_islands(emap) {
+    
+    // 2d array to store every island
+    let storage = [];
 
-//     // WRITE HERE.
+    // WRITE HERE
+    function store(r, c) {
+        for (let i = 0; i < array_length(storage); i = i + 1) {
+            for (let j = 0; j < array_length(storage[i]); j = j + 1) {
+                const target = storage[i][j];
+                // It is part of an island
+                if (equal(pair(r - 1, c), target) || equal(pair(r, c - 1), target)) {
+                    // Storing with all the other island points
+                    return storage[i][array_length(storage[i])] = pair(r, c);
+                }
+            }
+        }
+        // Storing in a new row
+        if (array_length(storage) === 0) {
+            storage[0] = [pair(r, c)];
+        } else {
+            storage[array_length(storage)] = [pair(r, c)];
+        }
+    }
+    for (let i = 0; i < array_length(emap); i = i + 1) {
+        for (let j = 0; j < array_length(emap[0]); j = j + 1){
+            if (emap[i][j] !== 0) {
+                store(i, j);
+            }
+        }
+    }
+    return array_length(storage);
+}
 
-// }
 
-
-// // TASK 3B TESTS
-// const emapB1 =
-// [[2, 1, 0, 2, 1, 1, 3],
-//  [0, 1, 0, 1, 0, 0, 2],
-//  [0, 0, 0, 2, 3, 1, 1],
-//  [1, 0, 2, 0, 0, 0, 0],
-//  [0, 0, 1, 2, 0, 0, 0],
-//  [1, 0, 3, 0, 1, 1, 2]]; // 6 islands
-// const emapB2 =
-// [[1, 2, 0, 0, 1, 0, 0, 1],
-//  [1, 2, 2, 3, 1, 0, 2, 1],
-//  [0, 1, 1, 0, 1, 0, 0, 1],
-//  [0, 0, 0, 0, 0, 3, 3, 0],
-//  [1, 1, 2, 0, 0, 0, 0, 0],
-//  [1, 0, 1, 0, 0, 1, 2, 3],
-//  [1, 3, 2, 1, 1, 0, 1, 1]]; // 5 islands
-// assert("3B_1", () => count_islands([[0]]), 0, []);
-// assert("3B_2", () => count_islands([[1]]), 1, []);
-// assert("3B_3", () => count_islands([[0,0], [0,0]]), 0, []);
-// assert("3B_4", () => count_islands([[2,1], [1,3]]), 1, []);
-// assert("3B_5", () => count_islands([[0,1], [0,0]]), 1, []);
-// assert("3B_6", () => count_islands([[2,0], [0,1]]), 2, []);
-// assert("3B_7", () => count_islands(emapB1), 6, []);
-// assert("3B_8", () => count_islands(emapB2), 5, []);
+// TASK 3B TESTS
+const emapB1 =
+[[2, 1, 0, 2, 1, 1, 3],
+ [0, 1, 0, 1, 0, 0, 2],
+ [0, 0, 0, 2, 3, 1, 1],
+ [1, 0, 2, 0, 0, 0, 0],
+ [0, 0, 1, 2, 0, 0, 0],
+ [1, 0, 3, 0, 1, 1, 2]]; // 6 islands
+const emapB2 =
+[[1, 2, 0, 0, 1, 0, 0, 1],
+ [1, 2, 2, 3, 1, 0, 2, 1],
+ [0, 1, 1, 0, 1, 0, 0, 1],
+ [0, 0, 0, 0, 0, 3, 3, 0],
+ [1, 1, 2, 0, 0, 0, 0, 0],
+ [1, 0, 1, 0, 0, 1, 2, 3],
+ [1, 3, 2, 1, 1, 0, 1, 1]]; // 5 islands
+display(count_islands(emapB2));
+assert("3B_1", () => count_islands([[0]]), 0, []);
+assert("3B_2", () => count_islands([[1]]), 1, []);
+assert("3B_3", () => count_islands([[0,0], [0,0]]), 0, []);
+assert("3B_4", () => count_islands([[2,1], [1,3]]), 1, []);
+assert("3B_5", () => count_islands([[0,1], [0,0]]), 1, []);
+assert("3B_6", () => count_islands([[2,0], [0,1]]), 2, []);
+assert("3B_7", () => count_islands(emapB1), 6, []);
+assert("3B_8", () => count_islands(emapB2), 5, []);
 
 
 // //===============================================================
