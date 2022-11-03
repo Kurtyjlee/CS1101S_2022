@@ -755,39 +755,53 @@ function count_peaks(emap) {
 // TASK 3B
 //===============================================================
 function count_islands(emap) {
-    
-    // 2d array to store every island
     let storage = [];
-
-    // WRITE HERE
-    function store(r, c) {
-        for (let i = 0; i < array_length(storage); i = i + 1) {
-            for (let j = 0; j < array_length(storage[i]); j = j + 1) {
-                const target = storage[i][j];
-                // It is part of an island
-                if (equal(pair(r - 1, c), target) || equal(pair(r, c - 1), target)) {
-                    // Storing with all the other island points
-                    return storage[i][array_length(storage[i])] = pair(r, c);
-                }
-            }
+    const rows = array_length(emap);
+    const cols = array_length(emap[0]);
+    let global_count = 0;
+    
+    function read(r, c) {
+        return storage[r] === undefined
+            ? undefined 
+            : storage[r][c];
+    }
+    function write(r, c, value) {
+        if (storage[r] === undefined) {
+            storage[r] = [];
         }
-        // Storing in a new row
-        if (array_length(storage) === 0) {
-            storage[0] = [pair(r, c)];
+        storage[r][c] = value;
+    }
+    
+    function explore(r, c) {
+        // Beyond the map or water
+        if (r < 0 || c < 0 || r >= rows || c >= cols || emap[r][c] === 0) {
+            return false;
+        }
+        else if (read(r, c) !== undefined) {
+            return false;
         } else {
-            storage[array_length(storage)] = [pair(r, c)];
+            write(r, c, 0);
+            // explore upwards
+            explore(r - 1, c);
+            // explore downwards
+            explore(r + 1, c);
+            // explore rightwards
+            explore(r, c + 1);
+            //explore leftwwards
+            explore(r, c - 1);
+            return true;
         }
     }
-    for (let i = 0; i < array_length(emap); i = i + 1) {
-        for (let j = 0; j < array_length(emap[0]); j = j + 1){
-            if (emap[i][j] !== 0) {
-                store(i, j);
+    
+    for (let i = 0; i < rows; i = i + 1) {
+        for (let j = 0; j < cols; j = j + 1) {
+            if (explore(i, j)) {
+                global_count = global_count + 1;
             }
         }
     }
-    return array_length(storage);
+    return global_count;
 }
-
 
 // TASK 3B TESTS
 const emapB1 =
@@ -805,7 +819,6 @@ const emapB2 =
  [1, 1, 2, 0, 0, 0, 0, 0],
  [1, 0, 1, 0, 0, 1, 2, 3],
  [1, 3, 2, 1, 1, 0, 1, 1]]; // 5 islands
-display(count_islands(emapB2));
 assert("3B_1", () => count_islands([[0]]), 0, []);
 assert("3B_2", () => count_islands([[1]]), 1, []);
 assert("3B_3", () => count_islands([[0,0], [0,0]]), 0, []);
