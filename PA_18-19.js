@@ -432,7 +432,7 @@
 //     }
 //     return array;
 // }
-// have to
+// have to use the function they provide. Makes everything easier
 
 // // // TASK 2A TESTS
 // // assert("2A_1", () => build_largest_int([1]),
