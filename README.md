@@ -1,2 +1,2 @@
-# CS1101S_studios
-Workings for my studio submissions. Studio submissions are not graded.
+# CS1101S studios, recitations and past year papers
+All attached files are not graded and does not violate the student code of conduct.
