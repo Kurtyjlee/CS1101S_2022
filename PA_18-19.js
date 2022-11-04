@@ -83,8 +83,7 @@
 // function big_int_to_string(bint) {
 
 //     // WRITE HERE.
-//     let string = "";
-//     return accumulate((x, ys) => stringify(x) + ys, string, reverse(bint));
+//     return accumulate((x, ys) => stringify(x) + ys, "", reverse(bint));
 // }
 
 // // // TASK 1B TESTS
@@ -433,6 +432,7 @@
 //     }
 //     return array;
 // }
+// have to
 
 // // // TASK 2A TESTS
 // // assert("2A_1", () => build_largest_int([1]),
